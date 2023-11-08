@@ -17,6 +17,10 @@ class Counter extends ChangeNotifier {
     value -= 1;
     notifyListeners();
   }
+
+  void destroy() {
+    dispose();
+  }
 }
 
 class DemoListenableProvider extends StatefulWidget {
@@ -44,6 +48,12 @@ class _DemoListenableProviderState extends State<DemoListenableProvider> {
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    counter.dispose();
   }
 }
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class DemoProviderPage extends StatefulWidget {
 
@@ -24,16 +25,20 @@ class _DemoProviderPageState extends State<DemoProviderPage> {
 }
 
 class Chame extends StatelessWidget {
+
   Widget child;
   Chame({required this.child});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text("Cha me widget"),
-        child
-      ],
+    return Provider.value(
+      value: "Hello",
+      child: Column(
+        children: [
+          Text("Cha me widget"),
+          child
+        ],
+      ),
     );
   }
 }
@@ -42,7 +47,8 @@ class Concai extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text("Con cai widget");
+    String text = context.read();
+    return Text("Con cai widget $text");
   }
 }
 

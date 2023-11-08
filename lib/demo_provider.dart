@@ -47,8 +47,12 @@ class Concai extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String text = context.read();
-    return Text("Con cai widget $text");
+    // String text = context.read();
+    return Consumer<String>(
+        builder: (context, text, child) {
+          return Text("Con cai widget $text");
+        },
+    );
   }
 }
 

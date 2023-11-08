@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Counter extends ChangeNotifier {
   int value;
@@ -7,10 +10,12 @@ class Counter extends ChangeNotifier {
 
   void inCrease() {
     value += 1;
+    notifyListeners();
   }
 
   void deCrease() {
     value -= 1;
+    notifyListeners();
   }
 }
 
@@ -21,6 +26,8 @@ class DemoListenableProvider extends StatefulWidget {
 }
 
 class _DemoListenableProviderState extends State<DemoListenableProvider> {
+  Counter counter = Counter(value: 0);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,8 +36,11 @@ class _DemoListenableProviderState extends State<DemoListenableProvider> {
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
-        child: Chame(
-          child: Concai(),
+        child: ListenableProvider.value(
+          value: counter,
+          child: Chame(
+            child: Concai(),
+          ),
         ),
       ),
     );
@@ -47,7 +57,11 @@ class Chame extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Text("Count: 0"),
+        Consumer<Counter>(
+            builder: (context, counter, child){
+              return Text("Count: ${counter.value}");
+            }
+        ),
         child
       ],
     );
@@ -55,15 +69,21 @@ class Chame extends StatelessWidget {
 }
 
 class Concai extends StatelessWidget {
-  const Concai({super.key});
+
+  late Counter counter;
 
   @override
   Widget build(BuildContext context) {
+    counter = context.watch();
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        ElevatedButton(onPressed: () { }, child: Text("+")),
-        ElevatedButton(onPressed: () { }, child: Text("-")),
+        ElevatedButton(onPressed: () {
+          counter.inCrease();
+        }, child: Text("+")),
+        ElevatedButton(onPressed: () {
+          counter.deCrease();
+        }, child: Text("-")),
       ],
     );
   }
